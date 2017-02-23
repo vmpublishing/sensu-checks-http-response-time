@@ -55,8 +55,8 @@ Alter `/opt/sensu/embedded/bin/gem` to the path to the gem-file sensu uses on yo
 | body_data | -d, --body_data | nil | no | body data to send along the request |
 | headers | -H, --headers |  | no | set request headers, comma separated |
 | user_agent | -A, --user-agent |  | no | user agent string to use for the request |
-| warn | -W, --warn-level | 500 | no | values above this threshold will trigger a warning notification |
-| critical | -C, --critical-level | 1000 | values above this threshold will trigger a critical notification |
+| warn | -W, --warn-level | 500 | no | in ms, values above this threshold will trigger a warning notification |
+| critical | -C, --critical-level | 1000 | no | in ms, values above this threshold will trigger a critical notification |
 
 #### sample json config file
 ```
@@ -101,7 +101,7 @@ Alter `/opt/sensu/embedded/bin/gem` to the path to the gem-file sensu uses on yo
 ```
 {
   "metrics": {
-    "check_some_site_response_time": {
+    "metric_some_site_response_time": {
       "type":         "metric",
       "command":      "check-http-response-time.rb -h some-site.com -a 123.234.34.45 -x http -S somesite.somerole -u /favicon.ico",
       "standalone":   "true",
