@@ -51,7 +51,7 @@ class MetricHttpResponseTime < Sensu::Plugin::Metric::CLI::Graphite
          required:         true
 
   option :protocol,
-         short:            '-s PROTOCOL',
+         short:            '-x PROTOCOL',
          long:             '--protocol PROTOCOL',
          description:      'protocol to use in curl query, defaults to https',
          default:          'https'
