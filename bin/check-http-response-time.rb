@@ -141,7 +141,7 @@ class CheckHttpResponseTime < Sensu::Plugin::Check::CLI
     # squelch site output
     command += '--output /dev/null '
 
-    command += '-w "%{time_total}"'
+    command += '-w "%{time_total}" '
 
     # add target uri
     command += "\"#{config[:protocol]}://#{domain_string}#{config[:url]}\""
@@ -150,12 +150,13 @@ class CheckHttpResponseTime < Sensu::Plugin::Check::CLI
     time_total = `#{command}`
     time_total_ms = (time_total.to_f * 1000.0).ceil.to_i
 
-    if time_total > config[:critical]
-      critical "request exceeded critical level: #{time_total}ms"
-    elsif time_total > config[:warning]
-      warning "request exceeded warning level: #{time_total}ms"
+    if time_total_ms > config[:critical]
+      critical "request exceeded critical level: #{time_total_ms}ms"
+    elsif time_total_ms > config[:warn]
+      warning "request exceeded warning level: #{time_total_ms}ms"
     end
 
+    ok "#{time_total_ms} is acceptable"
   end
 
 end
