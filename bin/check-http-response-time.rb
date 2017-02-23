@@ -150,9 +150,9 @@ class CheckHttpResponseTime < Sensu::Plugin::Check::CLI
     time_total = `#{command}`
     time_total_ms = (time_total.to_f * 1000.0).ceil.to_i
 
-    if time_total_ms > config[:critical]
+    if time_total_ms > config[:critical].to_i
       critical "request exceeded critical level: #{time_total_ms}ms"
-    elsif time_total_ms > config[:warn]
+    elsif time_total_ms > config[:warn].to_i
       warning "request exceeded warning level: #{time_total_ms}ms"
     end
 
