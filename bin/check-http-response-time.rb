@@ -26,7 +26,7 @@ class CheckHttpResponseTime < Sensu::Plugin::Check::CLI
          short:            '-p PORT',
          long:             '--port PORT',
          description:      'port to check on the target host, defaults to 80',
-         default:          80
+         default:          443
 
   option :host,
          short:            '-h HOSTNAME',
@@ -105,21 +105,14 @@ class CheckHttpResponseTime < Sensu::Plugin::Check::CLI
     # basic command
     command += "curl -sq "
 
-    # prepare domain part
-    domain_string = config[:address]
-    if config[:port]
-      config[:host] = config[:address] if !config[:host]
-      domain_string += ":#{config[:port]}"
-    end
-
     # add all headers
     config[:headers].split(',').each do |header_string|
       command += "-H \"#{header_string.gsub(/"/, '\\"')}\" "
     end
 
     # prepare optional hostname override
-    if config[:host]
-      command += "-H \"Host: #{config[:host]}\" "
+    if config[:host] && config[:address]
+      command += "--resolve '#{config[:host]}:#{config[:port]}:#{config[:address]}' "
     end
 
     # add body
@@ -144,6 +137,7 @@ class CheckHttpResponseTime < Sensu::Plugin::Check::CLI
     command += '-w "%{time_total}" '
 
     # add target uri
+    domain_string = config[:host] || config[:address]
     command += "\"#{config[:protocol]}://#{domain_string}#{config[:url]}\""
 
     # fetch stats
