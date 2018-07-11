@@ -103,7 +103,7 @@ class CheckHttpResponseTime < Sensu::Plugin::Check::CLI
     command += "sudo " if config[:sudo]
 
     # basic command
-    command += "curl -sq "
+    command += "LANG=en_GB curl -s -o /dev/null "
 
     # add all headers
     config[:headers].split(',').each do |header_string|
